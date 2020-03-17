@@ -1,34 +1,10 @@
-/* eslint-disable max-lines-per-function */
 // @ts-nocheck
 
-import { disp } from '../../../GAS | Library/v01/gas/disp';
-
-import {
-	generateArraysJbJ,
-	generateArraysTbT,
-	generateArraysJbJAndTbT,
-} from './taskGenerateRandomArrs';
-
-import {
-	pasteLocalJbJ,
-	pasteLocalTbT,
-	pasteExterJbJ,
-	pasteExterTbT,
-	pasteCacheJbJ,
-	pasteCacheTbT,
-} from './taskPasteData';
+import { exps } from './experiments';
 
 global.menu = {
-	test: () => disp('hello'),
-	generateArraysJbJ,
-	generateArraysTbT,
-	generateArraysJbJAndTbT,
-	pasteLocalJbJ,
-	pasteLocalTbT,
-	pasteExterJbJ,
-	pasteExterTbT,
-	pasteCacheJbJ,
-	pasteCacheTbT,
+	test: () => console.log('hello'),
+	exps,
 };
 
 const menu = () => {
@@ -36,58 +12,30 @@ const menu = () => {
 	ui.createMenu('ICON')
 		.addSubMenu(
 			ui
-				.createMenu('Test generowania losowych tablic')
-				.addItem(
-					'Generuj tablicę Job by Job',
-					'menu.generateArraysJbJ'
-				)
-				.addItem(
-					'Generuj tablicę Task by Task',
-					'menu.generateArraysTbT'
-				)
-				.addItem(
-					'Generuj tablicę Oba systemy',
-					'menu.generateArraysJbJAndTbT'
-				)
+				.createMenu('Exp: Generuj losowe dane')
+				.addItem('Job by Job', 'menu.exps.randomJbJ')
+				.addItem('Task by Task', 'menu.exps.randomTbT')
 		)
 		.addSeparator()
 		.addSubMenu(
 			ui
-				.createMenu('Test wklejania lokalnie')
-				.addItem(
-					'Wklejka lokalnie Job by Job',
-					'menu.pasteLocalJbJ'
-				)
-				.addItem(
-					'Wklejka lokalnie Task by Task',
-					'menu.pasteLocalTbT'
-				)
+				.createMenu('Exp: Wklejenie lokalnie')
+				.addItem('Job by Job', 'menu.exps.localJbJ')
+				.addItem('Task by Task', 'menu.exps.localTbT')
 		)
 		.addSeparator()
 		.addSubMenu(
 			ui
-				.createMenu('Test wklejania external')
-				.addItem(
-					'Wklejka external Job by Job',
-					'menu.pasteExterJbJ'
-				)
-				.addItem(
-					'Wklejka external Task by Task',
-					'menu.pasteExterTbT'
-				)
+				.createMenu('Exp: Wklejenie external')
+				.addItem('Job by Job', 'menu.exps.extJbJ')
+				.addItem('Task by Task', 'menu.exps.extTbT')
 		)
 		.addSeparator()
 		.addSubMenu(
 			ui
-				.createMenu('Test Cacha')
-				.addItem(
-					'Wklejka do cacha Job by Job',
-					'menu.pasteCacheJbJ'
-				)
-				.addItem(
-					'Wklejka do cacha Task by Task',
-					'menu.pasteCacheTbT'
-				)
+				.createMenu('Exp: Wklejenie Cache')
+				.addItem('Job by Job', 'menu.exps.cacheJbJ')
+				.addItem('Task by Task', 'menu.exps.cacheTbT')
 		)
 		.addSeparator()
 		.addItem('Test', 'menu.test')
