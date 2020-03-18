@@ -38,7 +38,7 @@ const menu = () => {
 				.addItem('Task by Task', 'menu.exps.cacheTbT')
 		)
 		.addSeparator()
-		.addItem('-Test', 'menu.test')
+		.addItem('Test', 'menu.test')
 		.addSeparator()
 		.addItem('Update menu', 'onOpen')
 		.addToUi();
