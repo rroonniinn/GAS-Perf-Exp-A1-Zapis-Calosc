@@ -3,7 +3,13 @@ import { paste } from '../../../GAS | Library/v02/gas/paste';
 import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
 import { getIdFromUrl } from '../../../GAS | Library/v02/gas/getIdFromUrl';
 import { crusherCache } from '../../../GAS | Library/v02/cache/crusherCache';
-import { LOCAL_SHEET, EXT_SHEET_URL, EXT_SHEET_NAME } from './config';
+import { pipe } from '../../../GAS | Library/v02/fp/pipe';
+import {
+	LOCAL_SHEET,
+	EXT_SHEET_URL,
+	EXT_SHEET_NAME,
+	EXT_SHEET_HUB_URL,
+} from './config';
 
 /**
  * Obiekt z funkcjami generującymi losowe tablice z numerami od 0 do 1000
@@ -23,10 +29,25 @@ const generateData = {
 };
 
 /**
+ * Helper
+ * Wpisuje w konsoli status działania
+ *
+ * @param {string} src Źródło np. external
+ * @param {string} taskCode Kod zadania (wypełnia się automatycznie)
+ * @returns {(val: array[]) => void}
+ */
+const printInfo = (src, taskCode) => val =>
+	console.log(`Paste to ${src} '${taskCode}' | ${val.length} rows`);
+
+/**
  * Pobiera odpowiednią funkcję generującą losowe dane
  * @param {string} taskCode Zdefiniowany kod zadania np. l100
  */
-const getRandomData = taskCode => generateData[taskCode];
+const getRandomData = taskCode =>
+	pipe(
+		generateData[taskCode],
+		printInfo('memory (generated random)', taskCode)
+	);
 
 /**
  * Wygeneruj losowe liczby i wklej je lokalnie
@@ -35,6 +56,7 @@ const getRandomData = taskCode => generateData[taskCode];
 const goLocal = taskCode => () => {
 	const randomData = generateData[taskCode]();
 	paste(getSheet(LOCAL_SHEET[taskCode]), 'A1', randomData);
+	printInfo('local', taskCode)(randomData);
 };
 
 /**
@@ -48,6 +70,22 @@ const goExternal = taskCode => () => {
 		'A1',
 		randomData
 	);
+	printInfo('external', taskCode)(randomData);
+};
+
+/**
+ * Wygeneruj losowe liczby i wklej je do zewnętrznego Hubu
+ * do odpowiednich arkuszy
+ * @param {string} taskCode Zdefiniowany kod zadania np. l100
+ */
+const goHub = taskCode => () => {
+	const randomData = generateData[taskCode]();
+	paste(
+		getSheet(LOCAL_SHEET[taskCode], getIdFromUrl(EXT_SHEET_HUB_URL)),
+		'A1',
+		randomData
+	);
+	printInfo('hub', taskCode)(randomData);
 };
 
 /**
@@ -56,7 +94,8 @@ const goExternal = taskCode => () => {
  */
 const goCache = taskCode => () => {
 	const randomData = generateData[taskCode]();
-	crusherCache.put(taskCode, randomData, 120);
+	crusherCache.put(`x${taskCode}`, randomData, 120); // Modyfikuje klucz aby się cache nie nakładały z innym eksperymentami
+	printInfo('cache', taskCode)(randomData);
 };
 
-export { goLocal, goExternal, goCache, getRandomData };
+export { goLocal, goExternal, goCache, getRandomData, goHub };

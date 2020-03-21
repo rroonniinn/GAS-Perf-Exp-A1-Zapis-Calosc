@@ -4,6 +4,8 @@ import { paste } from '../../../GAS | Library/v02/gas/paste';
 import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
 import { pipe } from '../../../GAS | Library/v02/fp/pipe';
 
+import { SHORT_DSC, LONG_DESC, WHERE_TO_PRINT } from './config';
+
 /* ***************** Helpers ******************* */
 
 /**
@@ -47,4 +49,23 @@ const printTimes = sheet => () =>
 
 const fire = (quant, callback, testTypeCallback, desc, resSheet) =>
 	pipe(testTypeCallback(quant, callback, desc), printTimes(resSheet));
-export { runJbJ, runTbT, fire };
+
+/**
+ * Podstawowa funkcja "single". Wykonuje się i zapisuje czas w pliku
+ *
+ * @param {string} taskCode Kod zadania - np l100
+ * @param {function} callback Testowana funkcja
+ */
+
+const single = (taskCode, callback) => {
+	performanceCheckerObj(
+		loggerRes,
+		callback(taskCode),
+		SHORT_DSC[taskCode],
+		LONG_DESC[callback.name],
+		'Single Random'
+	);
+	printTimes(WHERE_TO_PRINT[callback.name])();
+};
+
+export { runJbJ, runTbT, fire, single };

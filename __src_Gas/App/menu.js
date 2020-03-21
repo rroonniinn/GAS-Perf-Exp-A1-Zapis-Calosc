@@ -1,6 +1,10 @@
 // @ts-nocheck
 
-import { exps } from './experiments';
+import { exps, runRandomSingle } from './experiments';
+
+global.runRandomSingle = () => {
+	runRandomSingle();
+};
 
 global.menu = {
 	test: () => console.log('hello'),

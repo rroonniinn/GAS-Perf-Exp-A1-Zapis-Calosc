@@ -1,9 +1,16 @@
 /* eslint-disable max-params */
 import { looper } from '../../../GAS | Library/v01/utils/looper';
-import { goLocal, goExternal, goCache, getRandomData } from './tasks';
-import { runJbJ, runTbT, fire } from './helpers';
+import { randomFromArray } from '../../../GAS | Library/v02/arr/randomFromArray';
 
 import { SHEETS } from './config';
+import { runJbJ, runTbT, fire, single } from './helpers';
+import {
+	goLocal,
+	goExternal,
+	goCache,
+	goHub,
+	getRandomData,
+} from './tasks';
 
 /* ***************** Strukrura testów ******************* */
 
@@ -57,16 +64,37 @@ const exps = {
 	randomTbT: fire(50, getRandomData, tbt, DESC_RAND, SHEETS.RAND),
 
 	/* LOCAL 10 */
-	localJbJ: fire(10, goLocal, jbj, `${DESC}(local)`, SHEETS.LOCAL),
-	localTbT: fire(10, goLocal, tbt, `${DESC}(local)`, SHEETS.LOCAL),
+	localJbJ: fire(20, goLocal, jbj, `${DESC}(local)`, SHEETS.LOCAL),
+	localTbT: fire(20, goLocal, tbt, `${DESC}(local)`, SHEETS.LOCAL),
 
 	/* EXTERNAL 10 */
-	extJbJ: fire(10, goExternal, jbj, `${DESC}(external)`, SHEETS.EXTER),
-	extTbT: fire(10, goExternal, tbt, `${DESC}(external)`, SHEETS.EXTER),
+	extJbJ: fire(20, goExternal, jbj, `${DESC}(external)`, SHEETS.EXTER),
+	extTbT: fire(20, goExternal, tbt, `${DESC}(external)`, SHEETS.EXTER),
 
 	/* CACHE 30 */
-	cacheJbJ: fire(30, goCache, jbj, `${DESC}(cache)`, SHEETS.CACHE),
-	cacheTbT: fire(30, goCache, tbt, `${DESC}(cache)`, SHEETS.CACHE),
+	cacheJbJ: fire(50, goCache, jbj, `${DESC}(cache)`, SHEETS.CACHE),
+	cacheTbT: fire(50, goCache, tbt, `${DESC}(cache)`, SHEETS.CACHE),
 };
 
-export { exps };
+/* ******************** TESTY POJEDYŃCZE *********** */
+const randomCode = [
+	'l100',
+	'l200',
+	'l500',
+	'l1000',
+	'l2000',
+	'l4000',
+	'l8000',
+	'l16000',
+];
+const randomFn = [goLocal, goExternal, goCache, goHub, getRandomData];
+
+const runRandomSingle = () => {
+	const [code] = randomFromArray(randomCode, 1);
+	const [fn] = randomFromArray(randomFn, 1);
+	console.log(`Arkusz: ${code} | Fn: ${fn.name}`);
+
+	single(code, fn);
+};
+
+export { exps, runRandomSingle };
