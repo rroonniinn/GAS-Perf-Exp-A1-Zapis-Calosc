@@ -1,14 +1,16 @@
 // @ts-nocheck
 
+import { ditributeToOtherFiles } from './ditributeToOtherFiles';
 import { exps, runRandomSingle } from './experiments';
 
-global.runRandomSingle = () => {
-	runRandomSingle();
-};
+// global.runRandomSingle = () => {
+// 	runRandomSingle();
+// };
 
 global.menu = {
 	test: () => console.log('hello'),
 	exps,
+	ditributeToOtherFiles,
 };
 
 const menu = () => {
@@ -42,6 +44,7 @@ const menu = () => {
 				.addItem('Task by Task', 'menu.exps.cacheTbT')
 		)
 		.addSeparator()
+		.addItem('Distribute', 'menu.ditributeToOtherFiles')
 		.addItem('Test', 'menu.test')
 		.addSeparator()
 		.addItem('Update menu', 'onOpen')
