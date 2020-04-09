@@ -1,101 +1,156 @@
-import { randomIntegersArray2d } from '../../../GAS | Library/v02/arr/randomIntegersArray2d';
-import { paste } from '../../../GAS | Library/v02/gas/paste';
-import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
-import { getIdFromUrl } from '../../../GAS | Library/v02/gas/getIdFromUrl';
-import { crusherCache } from '../../../GAS | Library/v02/cache/crusherCache';
-import { pipe } from '../../../GAS | Library/v02/fp/pipe';
-import {
-	LOCAL_SHEET,
-	EXT_SHEET_URL,
-	EXT_SHEET_NAME,
-	EXT_SHEET_HUB_URL,
-} from './config';
-
+/* eslint-disable max-params */
 /**
- * Obiekt z funkcjami generującymi losowe tablice z numerami od 0 do 1000
- * o różnej liczbie wierszy i 15 kolumnach
- * @type {Object<string, function>} generateRandomArrs
+ * @typedef {import('./types').ExpSheet} ExpSheet
+ * @typedef {import('./types').ExpTasks} ExpTasks
  */
 
-const generateData = {
-	l100: () => randomIntegersArray2d(100, 15),
-	l200: () => randomIntegersArray2d(200, 15),
-	l500: () => randomIntegersArray2d(500, 15),
-	l1000: () => randomIntegersArray2d(1000, 15),
-	l2000: () => randomIntegersArray2d(2000, 15),
-	l4000: () => randomIntegersArray2d(4000, 15),
-	l8000: () => randomIntegersArray2d(8000, 15),
-	l16000: () => randomIntegersArray2d(16000, 15),
-};
+import { randomIntegersArray2d } from '../../../GAS | Library/v02/arr/randomIntegersArray2d';
+import { crusherCache } from '../../../GAS | Library/v02/cache/crusherCache';
+import { pipe } from '../../../GAS | Library/v02/fp/pipe';
+import { randomFromArray } from '../../../GAS | Library/v02/arr/randomFromArray';
+import { paste } from '../../../GAS | Library/v02/gas/paste';
+
+import { getProperSheet, buildTask, single, TARGETS } from './helpers';
+
+/**
+ * Tablica docelowych arkuszy (tylko zawierających dane)
+ * @type {[string, ExpSheet][]} targets Tablica docelowych wielkości arkuszy
+ */
+
+// const targets = Object.entries(TARGET_SHEETS).filter(
+// 	([, { status }]) => status
+// );
 
 /**
  * Helper
  * Wpisuje w konsoli status działania
  *
- * @param {string} src Źródło np. external
- * @param {string} taskCode Kod zadania (wypełnia się automatycznie)
+ * @param {string} geo Źródło np. external
+ * @param {string} desc Opis z którego arkusza wzięte dane
  * @returns {(val: array[]) => void}
  */
-const printInfo = (src, taskCode) => val =>
-	console.log(`Paste to ${src} '${taskCode}' | ${val.length} rows`);
-
-/**
- * Pobiera odpowiednią funkcję generującą losowe dane
- * @param {string} taskCode Zdefiniowany kod zadania np. l100
- */
-const getRandomData = taskCode =>
-	pipe(
-		generateData[taskCode],
-		printInfo('memory (generated random)', taskCode)
+const printInfo = (geo, ver, desc) => val =>
+	console.log(
+		`** Set to ${geo} '${desc}' | Ver: ${ver} | ${val.length} rows`
 	);
 
 /**
- * Wygeneruj losowe liczby i wklej je lokalnie
- * @param {string} taskCode Zdefiniowany kod zadania np. l100
+ * Zwraca specyficzny obiekt do paste
+ * @param {'default'|'full'|'nothing'} ver
+ * @returns
  */
-const goLocal = taskCode => () => {
-	const randomData = generateData[taskCode]();
-	paste(getSheet(LOCAL_SHEET[taskCode]), 'A1', randomData);
-	printInfo('local', taskCode)(randomData);
+
+const getOptions = ver => {
+	if (ver === 'default')
+		return {
+			notRemoveFilers: false,
+			sort: null,
+			sortOrder: null,
+			restrictCleanup: null,
+			notRemoveEmptys: false,
+		};
+	if (ver === 'nothing')
+		return {
+			notRemoveFilers: true,
+			restrictCleanup: 'preserve',
+			notRemoveEmptys: true,
+		};
+	if (ver === 'full') {
+		return {
+			sort: 1,
+			sortOrder: 'az',
+		};
+	}
 };
 
 /**
- * Wygeneruj losowe liczby i wklej je do zewnętrznego arkusza
- * @param {string} taskCode Zdefiniowany kod zadania np. l100
+ * Zapisz losowe dane dane do wskazanego źródła i wskazanego arkusza
+ * @param {'ext'|'loc'|'hub'} geo Strukura danych do pobrania
+ * @param {'default'|'full'|'nothing'} ver Wersja opcji - default - domyślna, full - dodane sortowanie do domyślej, nothing - tylko wkleja
+ * @return {(target: ExpSheet) => function} target Np. target1 czy target2
  */
-const goExternal = taskCode => () => {
-	const randomData = generateData[taskCode]();
-	paste(
-		getSheet(EXT_SHEET_NAME, getIdFromUrl(EXT_SHEET_URL[taskCode])),
-		'A1',
-		randomData
+const setToSheet = (geo, ver) => target => {
+	const data = randomIntegersArray2d(target.size, 15);
+
+	return pipe(
+		() => getProperSheet(geo, target),
+		sheet => paste(sheet, 'A1', data, getOptions(ver)),
+		() => printInfo(geo, ver, target.printName)
 	);
-	printInfo('external', taskCode)(randomData);
 };
 
 /**
- * Wygeneruj losowe liczby i wklej je do zewnętrznego Hubu
- * do odpowiednich arkuszy
- * @param {string} taskCode Zdefiniowany kod zadania np. l100
+ * Wklej dane do cacha
+ * @param {string} prefix Przedrostek odróżniający cache od siebie
+ * do testów 1, 15, 30 min i 1h
+ * @returns {(target: ExpSheet) => function} target Np. target1 czy target2
  */
-const goHub = taskCode => () => {
-	const randomData = generateData[taskCode]();
-	paste(
-		getSheet(LOCAL_SHEET[taskCode], getIdFromUrl(EXT_SHEET_HUB_URL)),
-		'A1',
-		randomData
+const setToCache = prefix => target => {
+	const data = randomIntegersArray2d(target.size, 15);
+
+	return pipe(
+		() => crusherCache.put(`${prefix}${target.size}`, data, 360),
+		() => printInfo('cache', prefix, target.printName)
 	);
-	printInfo('hub', taskCode)(randomData);
 };
 
 /**
- * Wygeneruj losowe liczby  i wklej je do cacha
- * @param {string} taskCode Zdefiniowany kod zadania np. l100
+ * Obiekt z zadaniami / eksperymentami do wykonania. Pierwszy argument
+ * musi się zgadzać z tabelą printTo w EXP_SETUP
+ * @type {ExpTasks[]}
  */
-const goCache = taskCode => () => {
-	const randomData = generateData[taskCode]();
-	crusherCache.put(`x${taskCode}`, randomData, 120); // Modyfikuje klucz aby się cache nie nakładały z innym eksperymentami
-	printInfo('cache', taskCode)(randomData);
+
+// Sety funkcji do losowania
+const randomFnLoc = [
+	buildTask('loc', setToSheet, ['loc', 'nothing'], 'a'),
+	buildTask('loc', setToSheet, ['loc', 'default'], 'b'),
+	buildTask('loc', setToSheet, ['loc', 'full'], 'c'),
+];
+
+const randomFnHub = [
+	buildTask('hub', setToSheet, ['hub', 'nothing'], 'a'),
+	buildTask('hub', setToSheet, ['hub', 'default'], 'b'),
+	buildTask('hub', setToSheet, ['hub', 'full'], 'c'),
+];
+
+const randomFnExt = [
+	buildTask('ext', setToSheet, ['ext', 'nothing'], 'a'),
+	buildTask('ext', setToSheet, ['ext', 'default'], 'b'),
+	buildTask('ext', setToSheet, ['ext', 'full'], 'c'),
+];
+
+// Przygotowanie zadań dla casha odpytywanego co 1, 15 i 30 min
+const randomFnCacheA = [buildTask('cache', setToCache, ['va'], 'a')];
+const randomFnCacheB = [buildTask('cache', setToCache, ['vb'], 'b')];
+const randomFnCacheC = [buildTask('cache', setToCache, ['vc'], 'c')];
+const randomFnCacheD = [buildTask('cache', setToCache, ['vd'], 'd')];
+
+/**
+ * Template losowego wyboru funkcji do wykonania
+ * @param {ExpTasks[]} functionsSet
+ */
+
+const runRandom = functionsSet => () => {
+	const [[, target]] = randomFromArray(TARGETS, 1);
+	const [task] = randomFromArray(functionsSet, 1);
+
+	single(target, task);
 };
 
-export { goLocal, goExternal, goCache, getRandomData, goHub };
+const randomExternal = runRandom(randomFnExt);
+const randomLocal = runRandom(randomFnLoc);
+const randomHub = runRandom(randomFnHub);
+const randomCacheA = runRandom(randomFnCacheA);
+const randomCacheB = runRandom(randomFnCacheB);
+const randomCacheC = runRandom(randomFnCacheC);
+const randomCacheD = runRandom(randomFnCacheD);
+
+export {
+	randomExternal,
+	randomLocal,
+	randomHub,
+	randomCacheA,
+	randomCacheB,
+	randomCacheC,
+	randomCacheD,
+};
