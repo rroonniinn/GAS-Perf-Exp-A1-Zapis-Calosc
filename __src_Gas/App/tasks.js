@@ -12,14 +12,6 @@ import { paste } from '../../../GAS | Library/v02/gas/paste';
 
 import { getProperSheet, buildTask, single, TARGETS } from './helpers';
 
-/**
- * Tablica docelowych arkuszy (tylko zawierających dane)
- * @type {[string, ExpSheet][]} targets Tablica docelowych wielkości arkuszy
- */
-
-// const targets = Object.entries(TARGET_SHEETS).filter(
-// 	([, { status }]) => status
-// );
 
 /**
  * Helper
