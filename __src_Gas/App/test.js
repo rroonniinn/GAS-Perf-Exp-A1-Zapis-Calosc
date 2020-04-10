@@ -1,82 +1,79 @@
+/* eslint-disable complexity */
 /* eslint-disable max-lines-per-function */
-import { getChartAtLocation } from '../../../GAS | Library/v02/gas/getChartAtLocation';
-import { getChartInfo } from '../../../GAS | Library/v02/gas/getChartInfo';
-import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
+
+import { getIdFromUrl } from '../../../GAS | Library/v02/gas/getIdFromUrl';
+import { applyMassChangesToSheet } from '../../../GAS | Library/v02/gas/applyMassChangesToSheet';
+import { applyMassChangesToSpreadsheet } from '../../../GAS | Library/v02/gas/applyMassChangesToSpreadsheet';
+
+/**
+ * @typedef {import('../../../GAS | Library/v02/gas/applyMassChangesToSpreadsheet').SheetMassChangesOptions} SheetMassChangesOptions
+ */
 
 const test = () => {
-	const url = '10VoCF3VehjS54auDhfyNHpIRuMi7ABqfBfFzsmlg4yc';
-	const sheet = getSheet('Wyniki', url);
+	const url =
+		'https://docs.google.com/spreadsheets/d/138usMqswIw8Ki3PQc5qPmJLxL1MyqJt2dE1jG1C4j68/edit#gid=0';
+	const ss = SpreadsheetApp.openById(getIdFromUrl(url));
 
-	const colorA = '#ffff00'; // yellow
-	const colorB = '#c32e21'; // redDark
-	const colorBg = '#ea4335'; // red
-	const chart = getChartAtLocation('A', 13, sheet)
-		.modify()
-		.asComboChart()
-		.setOption('backgroundColor', {
-			fill: colorBg,
-			stroke: colorBg,
-			strokeWidth: 1,
-		})
-		.setOption('fontName', 'Roboto Condensed')
-		.setOption('hAxis', { textStyle: { color: 'white' } })
-		.setOption('series', {
-			0: {
-				targetAxisIndex: 1,
-				type: 'line',
-				color: colorA,
-				curveType: 'function',
-				lineWidth: 4,
-				pointSize: 7,
-				dataLabel: 'value',
-				dataLabelPlacement: 'above',
-				annotations: {
-					textStyle: {
-						color: colorA,
-						fontSize: 12,
-						fontName: 'Roboto Condensed',
-					},
-					stem: { color: colorA },
+	/**
+	 * @type {SheetMassChangesOptions} newFormats
+	 */
+
+	const newFormats = {
+		Arkusz1: [
+			[
+				'A1:H',
+				{
+					background: 'green',
+					values: 'YOOOO',
+					fontColor: 'white',
 				},
-				pointShape: 'circle',
-			},
-			1: {
-				targetAxisIndex: 0,
-				type: 'bars',
-				color: colorB,
-				lineWidth: 4,
-				pointSize: 7,
-				dataLabel: 'value',
-				dataLabelPlacement: 'below',
-				annotations: {
-					textStyle: {
-						color: colorB,
-						fontSize: 12,
-						fontName: 'Roboto Condensed',
-					},
-					stem: { color: colorB },
+			],
+		],
+		Arkusz2: [
+			[
+				'A1:H',
+				{
+					background: 'orange',
 				},
-			},
-		})
-		.setOption('vAxes', {
-			0: {
-				textStyle: { color: colorB, fontSize: 10 },
-				gridlines: { color: colorB },
-				baselineColor: colorB,
-			},
-			1: {
-				textStyle: { color: colorBg, fontSize: 1 },
-				gridlines: { color: colorB },
-				baselineColor: colorB,
-			},
-		})
-		// .setOption('legend', { position: 'none' })
-		.build();
+			],
+		],
+	};
+	applyMassChangesToSpreadsheet(ss, newFormats);
 
-	sheet.updateChart(chart);
-
-	// console.log(getChartInfo(chart));
-	// console.log('charts', charts);
-	// console.log('info', getChartInfo(charts));
+	// applyMassChangesToSheet(
+	// 	newFormats.Arkusz1,
+	// 	ss.getSheetByName('Arkusz1')
+	// );
 };
+
 export { test };
+const fileData = {};
+const title = '';
+const meanings = Object.values(fileData.sheetsMeaning).map(val => [val]);
+
+/**
+ * @type {SheetMassChangesOptions} wyniki
+ */
+
+const changes = {
+	wyniki: [
+		['A1:E4', { background: fileData.colorDark }],
+		['A5:E', { background: fileData.colorLight }],
+	],
+	helper: [
+		['B1', { values: title }],
+		['B2', { values: fileData.name }],
+		['E4:E9', { values: meanings }],
+	],
+	results: [['A1:BK2', { background: fileData.colorLight }]],
+};
+
+// {wyniki : [
+// 	['A1:E4', { background: fileData.colorDark }],
+// 	['A5:E', { background: fileData.colorLight }],
+// ],
+
+// const helper : [
+// 	['B1', { values: ],
+// 	['A5:E', { background: fileData.colorLight }],
+// ]}

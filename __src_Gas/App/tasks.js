@@ -12,7 +12,6 @@ import { paste } from '../../../GAS | Library/v02/gas/paste';
 
 import { getProperSheet, buildTask, single, TARGETS } from './helpers';
 
-
 /**
  * Helper
  * Wpisuje w konsoli status działania
@@ -27,9 +26,18 @@ const printInfo = (geo, ver, desc) => val =>
 	);
 
 /**
- * Zwraca specyficzny obiekt do paste
- * @param {'default'|'full'|'nothing'} ver
- * @returns
+ * Helper
+ * Zapisz dane używając najefektywniejszego natywnego mechanizmu
+ * @param {array[]} data Dane do wklejenia
+ * @return {(sheet: GoogleAppsScript.Spreadsheet.Sheet) => void}
+ */
+
+const pasteNative = data => sheet =>
+	sheet.getRange('A1:O').setValues(data);
+
+/**
+ * Zwraca specyficzny obiekt do paste. Dla 'native' nie jest wywoływana
+ * @param {'default'|'full'|'nothing'|'native'} ver
  */
 
 const getOptions = ver => {
@@ -58,7 +66,7 @@ const getOptions = ver => {
 /**
  * Zapisz losowe dane dane do wskazanego źródła i wskazanego arkusza
  * @param {'ext'|'loc'|'hub'} geo Strukura danych do pobrania
- * @param {'default'|'full'|'nothing'} ver Wersja opcji - default - domyślna, full - dodane sortowanie do domyślej, nothing - tylko wkleja
+ * @param {'default'|'full'|'nothing'|'native'} ver Wersja opcji - default - domyślna, full - dodane sortowanie do domyślej, nothing - tylko wkleja
  * @return {(target: ExpSheet) => function} target Np. target1 czy target2
  */
 const setToSheet = (geo, ver) => target => {
@@ -66,7 +74,10 @@ const setToSheet = (geo, ver) => target => {
 
 	return pipe(
 		() => getProperSheet(geo, target),
-		sheet => paste(sheet, 'A1', data, getOptions(ver)),
+		sheet =>
+			ver !== 'native'
+				? paste(sheet, 'A1', data, getOptions(ver))
+				: pasteNative(data),
 		() => printInfo(geo, ver, target.printName)
 	);
 };
@@ -97,18 +108,21 @@ const randomFnLoc = [
 	buildTask('loc', setToSheet, ['loc', 'nothing'], 'a'),
 	buildTask('loc', setToSheet, ['loc', 'default'], 'b'),
 	buildTask('loc', setToSheet, ['loc', 'full'], 'c'),
+	buildTask('loc', setToSheet, ['loc', 'native'], 'd'),
 ];
 
 const randomFnHub = [
 	buildTask('hub', setToSheet, ['hub', 'nothing'], 'a'),
 	buildTask('hub', setToSheet, ['hub', 'default'], 'b'),
 	buildTask('hub', setToSheet, ['hub', 'full'], 'c'),
+	buildTask('hub', setToSheet, ['hub', 'native'], 'd'),
 ];
 
 const randomFnExt = [
 	buildTask('ext', setToSheet, ['ext', 'nothing'], 'a'),
 	buildTask('ext', setToSheet, ['ext', 'default'], 'b'),
 	buildTask('ext', setToSheet, ['ext', 'full'], 'c'),
+	buildTask('ext', setToSheet, ['ext', 'native'], 'd'),
 ];
 
 // Przygotowanie zadań dla casha odpytywanego co 1, 15 i 30 min
