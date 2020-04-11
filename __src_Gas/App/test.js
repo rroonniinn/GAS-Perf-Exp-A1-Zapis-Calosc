@@ -1,79 +1,48 @@
 /* eslint-disable complexity */
 /* eslint-disable max-lines-per-function */
 
-import { getIdFromUrl } from '../../../GAS | Library/v02/gas/getIdFromUrl';
-import { applyMassChangesToSheet } from '../../../GAS | Library/v02/gas/applyMassChangesToSheet';
-import { applyMassChangesToSpreadsheet } from '../../../GAS | Library/v02/gas/applyMassChangesToSpreadsheet';
+import { modifySheet } from '../../../GAS | Library/v02/gas/modifySheet';
+import { modifySheets } from '../../../GAS | Library/v02/gas/modifySheets';
 
 /**
- * @typedef {import('../../../GAS | Library/v02/gas/applyMassChangesToSpreadsheet').SheetMassChangesOptions} SheetMassChangesOptions
+ * @typedef {import('../../../GAS | Library/v02/gas/modifySheets').SheetMassChangesOptions} SheetMassChangesOptions
+ * @typedef {import('../../../GAS | Library/v02/gas/modifySheet').RangeOptions} RangeOptions
  */
 
+/**
+ * @type {RangeOptions} wyniki
+ */
+
+const changes = [
+	'C2:C5',
+	{
+		values: [
+			['18mM6G0g0HCxc22EPi4kRN-VZM8CcuycbKGUGooW8m-Q'],
+			['1qRmFHwdzFaxt9ojeVT3uoDreVwYu468IEuTPaOvIMoQ'],
+			['1ANTyE8njV4O54MztLSP-yshF7VsUVvzKO1YvHiRQUaA'],
+			['1K7ruwoS97b_Ex9kgJwlgsEFz50_sBBEagV8dL5784PI'],
+		],
+	},
+];
+
 const test = () => {
-	const url =
-		'https://docs.google.com/spreadsheets/d/138usMqswIw8Ki3PQc5qPmJLxL1MyqJt2dE1jG1C4j68/edit#gid=0';
-	const ss = SpreadsheetApp.openById(getIdFromUrl(url));
+	// const id = '1cXQ4W0Tvwojh5q7h3HczE0W4lJi2Oiuqli1t2N0Nm40';
+	// const ss = SpreadsheetApp.openById(id);
 
-	/**
-	 * @type {SheetMassChangesOptions} newFormats
-	 */
-
-	const newFormats = {
-		Arkusz1: [
-			[
-				'A1:H',
-				{
-					background: 'green',
-					values: 'YOOOO',
-					fontColor: 'white',
-				},
-			],
-		],
-		Arkusz2: [
-			[
-				'A1:H',
-				{
-					background: 'orange',
-				},
-			],
-		],
-	};
-	applyMassChangesToSpreadsheet(ss, newFormats);
-
-	// applyMassChangesToSheet(
-	// 	newFormats.Arkusz1,
-	// 	ss.getSheetByName('Arkusz1')
-	// );
+	// modifySheets(ss, changes)
+	// 	.getSheets()
+	// 	.filter(sheet => /[A-Z]$/.test(sheet.getName()))
+	// 	.forEach(sheet =>
+	// 		modifySheet(
+	// 			[['A1:BK2', { background: fileData.colorLight }]],
+	// 			sheet
+	// 		)
+	// 	);
+	modifySheet(
+		[changes],
+		'Setup',
+		'1vGfYPKg6oAYtRc4JEhvMLruFhlddL1_QK4v_jN_k-sI'
+	);
 };
 
 export { test };
-const fileData = {};
-const title = '';
-const meanings = Object.values(fileData.sheetsMeaning).map(val => [val]);
-
-/**
- * @type {SheetMassChangesOptions} wyniki
- */
-
-const changes = {
-	wyniki: [
-		['A1:E4', { background: fileData.colorDark }],
-		['A5:E', { background: fileData.colorLight }],
-	],
-	helper: [
-		['B1', { values: title }],
-		['B2', { values: fileData.name }],
-		['E4:E9', { values: meanings }],
-	],
-	results: [['A1:BK2', { background: fileData.colorLight }]],
-};
-
-// {wyniki : [
-// 	['A1:E4', { background: fileData.colorDark }],
-// 	['A5:E', { background: fileData.colorLight }],
-// ],
-
-// const helper : [
-// 	['B1', { values: ],
-// 	['A5:E', { background: fileData.colorLight }],
-// ]}

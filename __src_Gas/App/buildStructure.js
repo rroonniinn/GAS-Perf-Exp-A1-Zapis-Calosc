@@ -5,6 +5,8 @@
 
 /**
  * @typedef {import('./types').PrintResults} PrintResults
+ * @typedef {import('../../../GAS | Library/v02/gas/modifySheets').SheetMassChangesOptions} SheetMassChangesOptions
+ * @typedef {import('../../../GAS | Library/v02/gas/modifySheet').RangeOptions} RangeOptions
  */
 
 import { copyFile } from '../../../GAS | Library/v02/gas/copyFile';
@@ -20,6 +22,9 @@ import { createSpreadsheetIn } from '../../../GAS | Library/v02/gas/createSpread
 import { pipe } from '../../../GAS | Library/v02/fp/pipe';
 import { seq } from '../../../GAS | Library/v01/fp/seq';
 import { getChartAtLocation } from '../../../GAS | Library/v02/gas/getChartAtLocation';
+import { modifySheet } from '../../../GAS | Library/v02/gas/modifySheet';
+import { modifySheets } from '../../../GAS | Library/v02/gas/modifySheets';
+import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
 
 import { EXP_SETUP } from './config';
 
@@ -68,38 +73,73 @@ const experimentRoot = getContainingFolder(localSpreadsheet);
 const buildPrintToFiles = urls => ([geo, fileData]) => {
 	/* Utwórz plik na bazie templatu */
 	const name = `${title} : ${printToSubname} : ${fileData.prefix}. ${fileData.name}`;
+
+	/**
+	 * @type {SheetMassChangesOptions} wyniki
+	 */
+
+	const changes = {
+		wyniki: [
+			['A1:E4', { background: fileData.colorDark }],
+			['A5:E', { background: fileData.colorLight }],
+		],
+		helper: [
+			['B1', { values: title }],
+			['B2', { values: fileData.name }],
+			[
+				'E4:E9',
+				{
+					values: Object.values(
+						fileData.sheetsMeaning
+					).map(val => [val]),
+				},
+			],
+		],
+	};
+
 	const newFileId = copyFile(
 		templatPrintTo,
 		name,
 		experimentRoot
 	).getId();
 
-	const s = SpreadsheetApp.openById(newFileId).getSheetByName('Wyniki');
-
-	/* Zmodyfikuj wygląd i dane */
-	s.getRange('A1:E4')
-		.setBackground(fileData.colorDark)
-		.getSheet()
-		.getRange('A5:E')
-		.setBackground(fileData.colorLight)
-		.getSheet()
-		.getParent()
-		.getSheetByName('helper')
-		.getRange('B1')
-		.setValue(title)
-		.getSheet()
-		.getRange('B2')
-		.setValue(fileData.name)
-		.getSheet()
-		.getRange('E4:E9')
-		.setValues(Object.values(fileData.sheetsMeaning).map(val => [val]))
-		.getSheet()
-		.getParent()
+	modifySheets(newFileId, changes)
 		.getSheets()
 		.filter(sheet => /[A-Z]$/.test(sheet.getName()))
 		.forEach(sheet =>
-			sheet.getRange('A1:BK2').setBackground(fileData.colorLight)
+			modifySheet(
+				[['A1:BK2', { background: fileData.colorLight }]],
+				sheet
+			)
 		);
+
+	// const s = SpreadsheetApp.openById(newFileId).getSheetByName('Wyniki');
+	const s = getSheet('Wyniki', newFileId);
+
+	// /* Zmodyfikuj wygląd i dane */
+	// s.getRange('A1:E4')
+	// 	.setBackground(fileData.colorDark)
+	// 	.getSheet()
+	// 	.getRange('A5:E')
+	// 	.setBackground(fileData.colorLight)
+	// 	.getSheet()
+	// 	.getParent()
+	// 	.getSheetByName('helper')
+	// 	.getRange('B1')
+	// 	.setValue(title)
+	// 	.getSheet()
+	// 	.getRange('B2')
+	// 	.setValue(fileData.name)
+	// 	.getSheet()
+	// 	.getRange('E4:E9')
+	// 	.setValues(Object.values(fileData.sheetsMeaning).map(val => [val]))
+	// 	.getSheet()
+	// 	.getParent()
+	// 	.getSheets()
+	// 	.filter(sheet => /[A-Z]$/.test(sheet.getName()))
+	// 	.forEach(sheet =>
+	// 		sheet.getRange('A1:BK2').setBackground(fileData.colorLight)
+	// 	);
 
 	urls[geo] = newFileId;
 
