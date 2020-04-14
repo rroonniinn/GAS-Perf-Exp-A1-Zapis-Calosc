@@ -1,6 +1,8 @@
-// @ts-nocheck
-import { menu } from './App/menu';
+import { setMenu } from '../../GAS | Library/v02/gas/setMenu';
 
+import { menuElements } from './App/menu';
+
+// @ts-ignore
 global.onOpen = () => {
-	menu();
+	setMenu(menuElements, 'ICON', true);
 };

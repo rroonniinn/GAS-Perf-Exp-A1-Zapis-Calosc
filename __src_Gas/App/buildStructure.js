@@ -5,8 +5,8 @@
 
 /**
  * @typedef {import('./types').PrintResults} PrintResults
- * @typedef {import('../../../GAS | Library/v02/gas/modifySheets').SheetMassChangesOptions} SheetMassChangesOptions
- * @typedef {import('../../../GAS | Library/v02/gas/modifySheet').RangeOptions} RangeOptions
+ * @typedef {import('../../../GAS | Library/v02/gas/styleSpreadsheet').SheetMassChangesOptions} SheetMassChangesOptions
+ * @typedef {import('../../../GAS | Library/v02/gas/styleSheet').RangeOptions} RangeOptions
  */
 
 import { copyFile } from '../../../GAS | Library/v02/gas/copyFile';
@@ -22,8 +22,8 @@ import { createSpreadsheetIn } from '../../../GAS | Library/v02/gas/createSpread
 import { pipe } from '../../../GAS | Library/v02/fp/pipe';
 import { seq } from '../../../GAS | Library/v01/fp/seq';
 import { getChartAtLocation } from '../../../GAS | Library/v02/gas/getChartAtLocation';
-import { modifySheet } from '../../../GAS | Library/v02/gas/modifySheet';
-import { modifySheets } from '../../../GAS | Library/v02/gas/modifySheets';
+import { styleSheet } from '../../../GAS | Library/v02/gas/styleSheet';
+import { styleSpreadsheet } from '../../../GAS | Library/v02/gas/styleSpreadsheet';
 import { getSheet } from '../../../GAS | Library/v02/gas/getSheet';
 
 import { EXP_SETUP } from './config';
@@ -58,10 +58,10 @@ const localSpreadsheet = SpreadsheetApp.getActive();
 
 /**
  * Folder, w którym znajduje się plik ze skryptem (bouund) eksperymentu
- * @type {GoogleAppsScript.Drive.Folder} experimentRoot
+ * @returns {GoogleAppsScript.Drive.Folder}
+ *
  */
-
-const experimentRoot = getContainingFolder(localSpreadsheet);
+const experimentRoot = () => getContainingFolder(localSpreadsheet);
 
 /**
  * Tworzy pliki z wynikami eksperymentów (w katalogu w którym znajduje
@@ -100,14 +100,14 @@ const buildPrintToFiles = urls => ([geo, fileData]) => {
 	const newFileId = copyFile(
 		templatPrintTo,
 		name,
-		experimentRoot
+		experimentRoot()
 	).getId();
 
-	modifySheets(newFileId, changes)
+	styleSpreadsheet(newFileId, changes)
 		.getSheets()
 		.filter(sheet => /[A-Z]$/.test(sheet.getName()))
 		.forEach(sheet =>
-			modifySheet(
+			styleSheet(
 				[['A1:BK2', { background: fileData.colorLight }]],
 				sheet
 			)
@@ -323,7 +323,7 @@ const buildStructure = () => {
 	// 2. Pliki z danymi
 	pipe(
 		buildLocalFile,
-		() => createFolder(experimentRoot, dataFolder),
+		() => createFolder(experimentRoot(), dataFolder),
 		seq(buildHub, buildExternals)
 	)();
 };

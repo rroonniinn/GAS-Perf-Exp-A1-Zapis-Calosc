@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+
 import {
 	startMinuteTrigger,
 	startHourTrigger,
@@ -48,60 +49,33 @@ global.menu = {
 	},
 };
 
-const menu = () => {
-	const ui = SpreadsheetApp.getUi();
-	ui.createMenu('ICON')
-		.addItem('Zbuduj strukturę plików', 'menu.buildStructure')
-		.addSeparator()
-		.addSubMenu(
-			ui
-				.createMenu('Test funkcji do odpalenia automatycznego')
-				.addItem('Test : randomLocal', 'randomLocal')
-				.addItem('Test : randomHub', 'randomHub')
-				.addItem('Test : randomExternal', 'randomExternal')
-				.addSeparator()
-				.addItem('Test : randomCache 1 min', 'randomCacheA')
-				.addItem('Test : randomCache 15 min', 'randomCacheB')
-				.addItem('Test : randomCache 30 min', 'randomCacheC')
-				.addItem('Test : randomCache 1h', 'randomCacheD')
-		)
+const menuElements = [
+	['Zbuduj strukturę plików', 'menu.buildStructure'],
+	'------------------',
+	[
+		'Test funkcji do odpalenia automatycznego',
+		['Test : randomLocal', 'randomLocal'],
+		['Test : randomHub', 'randomHub'],
+		['Test : randomExternal', 'randomExternal'],
+		'------------------',
+		['Test : randomCache 1 min', 'randomCacheA'],
+		['Test : randomCache 15 min', 'randomCacheB'],
+		['Test : randomCache 30 min', 'randomCacheC'],
+		['Test : randomCache 1h', 'randomCacheD'],
+	],
+	'------------------',
+	['Uruchom Trigger dla Random Local', 'menu.triggers.loc'],
+	['Uruchom Trigger dla Random Hub', 'menu.triggers.hub'],
+	['Uruchom Trigger dla Random External', 'menu.triggers.ext'],
+	'-----------------',
+	['Uruchom Trigger dla Random Cache 1 min', 'menu.triggers.cacheA'],
+	['Uruchom Trigger dla Random Cache 15 min', 'menu.triggers.cacheB'],
+	['Uruchom Trigger dla Random Cache 30 min', 'menu.triggers.cacheD'],
+	['Uruchom Trigger dla Random Cache 1 h', 'menu.triggers.cacheC'],
+	'-------------------',
+	['Zatrzymaj triggery', 'menu.triggers.stop'],
+	'-------------------',
+	['DEV', ['Test', 'menu.test'], ['Update menu', 'onOpen']],
+];
 
-		.addSeparator()
-		.addItem('Uruchom Trigger dla Random Local', 'menu.triggers.loc')
-		.addItem('Uruchom Trigger dla Random Hub', 'menu.triggers.hub')
-		.addItem(
-			'Uruchom Trigger dla Random External',
-			'menu.triggers.ext'
-		)
-		.addSeparator()
-		.addItem(
-			'Uruchom Trigger dla Random Cache 1 min',
-			'menu.triggers.cacheA'
-		)
-		.addItem(
-			'Uruchom Trigger dla Random Cache 15 min',
-			'menu.triggers.cacheB'
-		)
-		.addItem(
-			'Uruchom Trigger dla Random Cache 30 min',
-			'menu.triggers.cacheD'
-		)
-		.addItem(
-			'Uruchom Trigger dla Random Cache 1 h',
-			'menu.triggers.cacheC'
-		)
-
-		.addSeparator()
-		.addItem('Zatrzymaj triggery', 'menu.triggers.stop')
-		.addSeparator()
-		.addSubMenu(
-			ui
-				.createMenu('DEV')
-				.addItem('Test', 'menu.test')
-				.addItem('Update menu', 'onOpen')
-		)
-
-		.addToUi();
-};
-
-export { menu };
+export { menuElements };
