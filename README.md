@@ -31,7 +31,13 @@ Wklejenie danych za pomocą customowej, własnej metody paste w 3 opcjach:
 - 3. 'full' - na ustawieniach pełnych
 - 4. 'native F' - (full) wklejenie metodą natywną w notacji pełnej: np. 'A1:O400'
 - 5. 'native S' - (short) wklejenie metodą natywną w notacji krótkiej: np. 'A1:O'
+##### Cache
+Tylko podstawowa metoda oparta o Crushera
+
+
+#### Częstotliwość testu
+Co minutę
 
 
 #### Plik
-Dashboard: https://docs.google.com/spreadsheets/d/12nhC5N4ACni30RwQZ6iRuukwFjMG3VZBS5vqOZfqjvM/edit#gid=880283590
+Dashboard: https://docs.google.com/spreadsheets/d/1YNfLMNQSpnkSTKRU5s-uJqUOebvr1x0sLji89IFUNEI/edit#gid=880283590
