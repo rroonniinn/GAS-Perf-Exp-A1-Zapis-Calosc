@@ -1,7 +1,6 @@
-# PRV.016 | GAS Perf. Exp | E03
-## Test: 	Zapis danych do arkusza (cały zakres)
+# GAS | Perf. Exp | A1 - Zapis
+## Test najskuteczniejszej metody zapisu danych
 
-#### Kod: Z03
 
 #### Cel
 Poznanie czasów zapisu danych dla:
@@ -10,18 +9,29 @@ Poznanie czasów zapisu danych dla:
 
 #### Zadanie
 1. Zapisanie losowej tablicy danych do istniejącego źródła.
-2. Losowa tablica jest generowana w pamięci (czas tej operacji jest znikomy)
+2. Losowa tablica jest generowana w pamięci (czas tej operacji jest znikomy więc nie bieżemy jej pod uwagę)
 3. Wklejana jest cała tablica 1:1.
 4. Zakres docelowego arkusza jest równy wymiarowi danych - nie są dodawane nowe wiersze ani kolumny"
 
 
-#### Próbki
+#### Próbki / sample
 Arkusze o 15 kolumnach, o różnej liczbie wierszy: od 100 do 16 000
 
-#### Warianty
-1. Arkusze osadzone w pliku z którego jest uruchamiany skrypt
-2. Arkusze w odzielnych plikach (zawierające tylko dane testowane)
-3. Arkusze (dane) osadzone w cach'ach"
+#### Struktura
+1. Loc
+2. Hub
+3. Ext
+4. Cache
+
+#### Warianty:
+##### Dla Loc, Hub, Ext:
+Wklejenie danych za pomocą customowej, własnej metody paste w 3 opcjach:
+- 1. 'nothing', w której wyłączone są wszystkie opcje
+- 2. 'dafaut' - na ustawieniach domyślnych
+- 3. 'full' - na ustawieniach pełnych
+- 4. 'native F' - (full) wklejenie metodą natywną w notacji pełnej: np. 'A1:O400'
+- 5. 'native S' - (short) wklejenie metodą natywną w notacji krótkiej: np. 'A1:O'
+
 
 #### Plik
-Adres pliku z czasami i wykresami: https://docs.google.com/spreadsheets/d/1qV5DkLLS2XcZC2Oc3QsikbOtsA41N2PNBKyZghWbytY/edit#gid=252400475
+Dashboard: https://docs.google.com/spreadsheets/d/12nhC5N4ACni30RwQZ6iRuukwFjMG3VZBS5vqOZfqjvM/edit#gid=880283590

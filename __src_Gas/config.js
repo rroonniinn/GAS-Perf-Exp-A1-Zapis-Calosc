@@ -1,14 +1,19 @@
 /**
- * @typedef {import('./types').ExpSetup} ExpSetup
+ * Kolory eksperymentu
  */
+const colors = {
+	light: '#ea4335',
+	dark: '#c32e21',
+	accent: '#ffff00',
+};
 
 /**
  * Ustawienie całego eksperymentu
- * @type {ExpSetup} EXP_SETUP
+ * @type {import('../../GAS | Library/v02/experiments/types').ExpSetup} EXP_SETUP
  */
 
 const EXP_SETUP = {
-	title: 'Zapis : Całość',
+	title: 'Zapis (1 min)',
 	method: 'Single Random',
 	structure: {
 		fixed: 'col',
@@ -25,76 +30,83 @@ const EXP_SETUP = {
 		s7: 8000,
 		s8: 16000,
 	},
-	printTo: {
+	results: {
 		loc: {
 			prefix: 'A',
 			name: 'Local',
-			colorLight: '#ea4335',
-			colorDark: '#c32e21',
-			accentColor: '#ffff00',
+			colorLight: colors.light,
+			colorDark: colors.dark,
+			accentColor: colors.accent,
 			sheetsMeaning: {
 				a: 'nothing',
 				b: 'default',
 				c: 'full',
-				d: '',
-				e: '',
+				d: 'nativeS',
+				e: 'nativeF',
 				f: '',
 			},
 		},
 		hub: {
 			prefix: 'B',
 			name: 'Hub',
-			colorLight: '#ea4335',
-			colorDark: '#c32e21',
-			accentColor: '#ffff00',
+			colorLight: colors.light,
+			colorDark: colors.dark,
+			accentColor: colors.accent,
 			sheetsMeaning: {
 				a: 'nothing',
 				b: 'default',
 				c: 'full',
-				d: '',
-				e: '',
+				d: 'nativeS',
+				e: 'nativeF',
 				f: '',
 			},
 		},
 		ext: {
 			prefix: 'C',
 			name: 'External',
-			colorLight: '#ea4335',
-			colorDark: '#c32e21',
-			accentColor: '#ffff00',
+			colorLight: colors.light,
+			colorDark: colors.dark,
+			accentColor: colors.accent,
 			sheetsMeaning: {
 				a: 'nothing',
 				b: 'default',
 				c: 'full',
-				d: '',
-				e: '',
+				d: 'nativeS',
+				e: 'nativeF',
 				f: '',
 			},
 		},
 		cache: {
 			prefix: 'D',
 			name: 'Cache',
-			colorLight: '#ea4335',
-			colorDark: '#c32e21',
-			accentColor: '#ffff00',
+			colorLight: colors.light,
+			colorDark: colors.dark,
+			accentColor: colors.accent,
 			sheetsMeaning: {
 				a: '1 min',
-				b: '15 min',
-				c: '30 min',
-				d: '1 h',
+				b: '',
+				c: '',
+				d: '',
 				e: '',
 				f: '',
 			},
 		},
 	},
 	misc: {
-		templatPrintTo:
+		resultsTemplate:
 			'https://docs.google.com/spreadsheets/d/139mlb1yO8e_T8Bs25yX5kTiHaCvSNRuQf8RRyH2WpTg/edit#gid=1941260253',
 		printToSubname: 'Wyniki',
 		dataFolder: '_Pliki',
 		externalsSheetName: 'Dane',
 		externalsPrefix: 'file',
+		scriptFileSufix: 'Skrypt + Local',
 		hubName: 'externalHub',
+		dashboardName: 'Dashboard',
+		dashboardMainSheet: 'Dashboard',
+		dashboardDataSheet: 'h_dropData',
+		dashboardTemplate:
+			'https://docs.google.com/spreadsheets/d/1uPhrwk4YD0-7ZXDVdKKUZ5ACjk-WCfbhBBqIAe4SiUI/edit#gid=880283590',
+		dashboardColor: colors.light,
 	},
 };
 
