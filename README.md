@@ -1,11 +1,11 @@
-# GAS | Perf. Exp | A1 - Zapis
-## Test najskuteczniejszej metody zapisu danych
+# Perf. Exp | A.1.1 - Zapis : Całość : 1 min
 
 
 #### Cel
 Poznanie czasów zapisu danych dla:
 1. Różnych struktur arkuszy (internal, external, cache)
-2. Różnych wielkości arkuszy (zestawu danych)"
+2. Różnych wielkości arkuszy (zestawu danych)
+3. Różnych sposobów zapisu danych (customowa funkcja vs natywna)
 
 #### Zadanie
 1. Zapisanie losowej tablicy danych do istniejącego źródła.
@@ -27,7 +27,7 @@ Arkusze o 15 kolumnach, o różnej liczbie wierszy: od 100 do 16 000
 ##### Dla Loc, Hub, Ext:
 Wklejenie danych za pomocą customowej, własnej metody paste w 3 opcjach:
 - 1. 'nothing', w której wyłączone są wszystkie opcje
-- 2. 'dafaut' - na ustawieniach domyślnych
+- 2. 'dafault' - na ustawieniach domyślnych
 - 3. 'full' - na ustawieniach pełnych
 - 4. 'native F' - (full) wklejenie metodą natywną w notacji pełnej: np. 'A1:O400'
 - 5. 'native S' - (short) wklejenie metodą natywną w notacji krótkiej: np. 'A1:O'
@@ -39,5 +39,5 @@ Tylko podstawowa metoda oparta o Crushera
 Co minutę
 
 
-#### Plik
-Dashboard: https://docs.google.com/spreadsheets/d/1YNfLMNQSpnkSTKRU5s-uJqUOebvr1x0sLji89IFUNEI/edit#gid=880283590
+#### Pliki na Drivie
+https://drive.google.com/drive/folders/1MTPM-Fuqji1BSfrm862UkWiPcSBZfR6s

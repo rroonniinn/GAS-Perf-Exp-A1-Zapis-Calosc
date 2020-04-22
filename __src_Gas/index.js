@@ -3,23 +3,23 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
 /**
- * @typedef {import('../../GAS | Library/v02/experiments/types').ExpSheet} ExpSheet
- * @typedef {import('../../GAS | Library/v02/experiments/types').ExpTasks} ExpTasks
- * @typedef {import('../../GAS | Library/v02/gas/styleSheet').RangeOptions} RangeOptions
+ * @typedef {import('./../../../A.001 - My Library/v02/experiments/types').ExpSheet} ExpSheet
+ * @typedef {import('./../../../A.001 - My Library/v02/experiments/types').ExpTasks} ExpTasks
+ * @typedef {import('./../../../A.001 - My Library/v02/gas/styleSheet').RangeOptions} RangeOptions
  */
 
-import { setMenu } from '../../GAS | Library/v02/gas/setMenu';
-import { randomIntegersArray2d } from '../../GAS | Library/v02/arr/randomIntegersArray2d';
-import { crusherCache } from '../../GAS | Library/v02/cache/crusherCache';
-import { pipe } from '../../GAS | Library/v02/fp/pipe';
-import { paste } from '../../GAS | Library/v02/gas/paste';
-import { getProperSheet } from '../../GAS | Library/v02/experiments/getProperSheet';
-import { runRandom } from '../../GAS | Library/v02/experiments/runRandom';
-import { buildStructure } from '../../GAS | Library/v02/experiments/buildStructure';
+import { setMenu } from '../../../A.001 - My Library/v02/gas/setMenu';
+import { randomIntegersArray2d } from '../../../A.001 - My Library/v02/arr/randomIntegersArray2d';
+import { crusherCache } from '../../../A.001 - My Library/v02/cache/crusherCache';
+import { pipe } from '../../../A.001 - My Library/v02/fp/pipe';
+import { paste } from '../../../A.001 - My Library/v02/gas/paste';
+import { getProperSheet } from '../../../A.001 - My Library/v02/experiments/getProperSheet';
+import { runRandom } from '../../../A.001 - My Library/v02/experiments/runRandom';
+import { buildStructure } from '../../../A.001 - My Library/v02/experiments/buildStructure';
 import {
 	setEveryMin,
 	stopTimeTriggers,
-} from '../../GAS | Library/v01/gas/timeTriggers';
+} from '../../../A.001 - My Library/v01/gas/timeTriggers';
 
 import { EXP_SETUP } from './config';
 
