@@ -9,11 +9,11 @@ const colors = {
 
 /**
  * Ustawienie całego eksperymentu
- * @type {import('./../../../A.001 - My Library/v02/experiments/types').ExpSetup} EXP_SETUP
+ * @type {import('./../../../../00. My Library/v02/experiments/types').ExpSetup} EXP_SETUP
  */
 
 const EXP_SETUP = {
-	title: 'Zapis (1 min)',
+	title: 'Zapis : Całość : 1 min',
 	method: 'Single Random',
 	structure: {
 		fixed: 'col',

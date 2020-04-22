@@ -3,23 +3,23 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-params */
 /**
- * @typedef {import('./../../../A.001 - My Library/v02/experiments/types').ExpSheet} ExpSheet
- * @typedef {import('./../../../A.001 - My Library/v02/experiments/types').ExpTasks} ExpTasks
- * @typedef {import('./../../../A.001 - My Library/v02/gas/styleSheet').RangeOptions} RangeOptions
+ * @typedef {import('./../../../../00. My Library/v02/experiments/types').ExpSheet} ExpSheet
+ * @typedef {import('./../../../../00. My Library/v02/experiments/types').ExpTasks} ExpTasks
+ * @typedef {import('./../../../../00. My Library/v02/gas/styleSheet').RangeOptions} RangeOptions
  */
 
-import { setMenu } from '../../../A.001 - My Library/v02/gas/setMenu';
-import { randomIntegersArray2d } from '../../../A.001 - My Library/v02/arr/randomIntegersArray2d';
-import { crusherCache } from '../../../A.001 - My Library/v02/cache/crusherCache';
-import { pipe } from '../../../A.001 - My Library/v02/fp/pipe';
-import { paste } from '../../../A.001 - My Library/v02/gas/paste';
-import { getProperSheet } from '../../../A.001 - My Library/v02/experiments/getProperSheet';
-import { runRandom } from '../../../A.001 - My Library/v02/experiments/runRandom';
-import { buildStructure } from '../../../A.001 - My Library/v02/experiments/buildStructure';
+import { setMenu } from '../../../../00. My Library/v02/gas/setMenu';
+import { randomIntegersArray2d } from '../../../../00. My Library/v02/arr/randomIntegersArray2d';
+import { crusherCache } from '../../../../00. My Library/v02/cache/crusherCache';
+import { pipe } from '../../../../00. My Library/v02/fp/pipe';
+import { paste } from '../../../../00. My Library/v02/gas/paste';
+import { getProperSheet } from '../../../../00. My Library/v02/experiments/getProperSheet';
+import { runRandom } from '../../../../00. My Library/v02/experiments/runRandom';
+import { buildStructure } from '../../../../00. My Library/v02/experiments/buildStructure';
 import {
 	setEveryMin,
 	stopTimeTriggers,
-} from '../../../A.001 - My Library/v01/gas/timeTriggers';
+} from '../../../../00. My Library/v01/gas/timeTriggers';
 
 import { EXP_SETUP } from './config';
 
@@ -118,15 +118,6 @@ const setToSheet = (geo, ver) => target => {
 	if (ver === 'nativeF') {
 		return pasteNativeFull(data, sheet);
 	}
-
-	// return pipe(
-	// 	() => getProperSheet(geo, target, EXP_SETUP),
-	// 	sheet =>
-	// 		ver !== 'native'
-	// 			? paste(sheet, 'A1', data, getOptions(ver))
-	// 			: pasteNativeShort(data),
-	// 	() => printInfo(geo, ver, target.printName)
-	// );
 };
 
 /**
