@@ -1,6 +1,5 @@
 # Perf. Exp | A.1.1 - Zapis : Całość : 1 min
 
-
 #### Cel
 Poznanie czasów zapisu danych dla:
 1. Różnych struktur arkuszy (internal, external, cache)
@@ -12,7 +11,6 @@ Poznanie czasów zapisu danych dla:
 2. Losowa tablica jest generowana w pamięci (czas tej operacji jest znikomy więc nie bieżemy jej pod uwagę)
 3. Wklejana jest cała tablica 1:1.
 4. Zakres docelowego arkusza jest równy wymiarowi danych - nie są dodawane nowe wiersze ani kolumny"
-
 
 #### Próbki / sample
 Arkusze o 15 kolumnach, o różnej liczbie wierszy: od 100 do 16 000
@@ -34,10 +32,8 @@ Wklejenie danych za pomocą customowej, własnej metody paste w 3 opcjach:
 ##### Cache
 Tylko podstawowa metoda oparta o Crushera
 
-
 #### Częstotliwość testu
 Co minutę
-
 
 #### Pliki na Drivie (wsztstkie wersje czasowe)
 https://drive.google.com/drive/folders/1bqq5b-bC3nwrswRouX-cjbrWFtWQWHly
