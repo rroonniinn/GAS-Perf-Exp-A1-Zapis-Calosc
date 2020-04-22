@@ -39,5 +39,5 @@ Tylko podstawowa metoda oparta o Crushera
 Co minutę
 
 
-#### Pliki na Drivie
-https://drive.google.com/drive/folders/1MTPM-Fuqji1BSfrm862UkWiPcSBZfR6s
+#### Pliki na Drivie (wsztstkie wersje czasowe)
+https://drive.google.com/drive/folders/1bqq5b-bC3nwrswRouX-cjbrWFtWQWHly

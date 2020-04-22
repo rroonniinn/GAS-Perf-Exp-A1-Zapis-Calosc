@@ -23,6 +23,8 @@ import {
 
 import { EXP_SETUP } from './config';
 
+//--
+
 /**
  * * Helper
  * Funkcja oczekująca tablicy funkcji z których będzie losowała te, które
